@@ -1,189 +1,309 @@
-.mood-container {
-  width: 100%;
-  height: 100%;
-  max-width: 75rem;
-  margin: 0 auto;
-  padding: 1.25rem;
-  display: block;
-}
-
-.emotion-selector {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.emotion-button {
+.main-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  border: 2px solid transparent;
-  border-radius: var(--border-radius);
-  background-color: var(--background-dark);
-  color: var(--text-light);
-  cursor: pointer;
-  transition: var(--transition);
+  gap: 1.5rem;
+  flex: 3 1 0%;
+  width: 100%;
 }
 
-.emotion-button:hover {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  border-color: var(--primary-color);
-  transition: var(--transition);
-}
-
-.emotion-button.selected {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  border-color: var(--primary-color);
-  transition: var(--transition);
-}
-
-.emotion-button:active {
-  transform: translateY(3px);
-  transition: var(--transition);
-}
-
-.emotion-emoji {
-  font-size: 1.5rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.emotion-name {
-  font-size: 1rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.selected-emotion {
+.mood-dashboard {
   display: flex;
-  flex-direction: column;  
-  align-items: center;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: flex-start;
   justify-content: center;
-  margin: 1rem;
-  width: fit-content;
-  gap: 0.5rem;
-  padding: 1rem;
-  border: 2px solid transparent;
-  border-radius: var(--border-radius);
-  background-color: var(--background-dark);
-  color: var(--text-light);
-  transition: var(--transition);
+  width: 100%;
+  margin-block: 2rem;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .mood-history {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: fit-content;
-  margin-top: 2rem;
-  margin-inline-start: 1rem;
-  padding: 1rem;
-  background-color: var(--background-dark);
-  border-radius: var(--border-radius);
-}
-
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.mood-entry {
-  display: flex;
-  align-items: center;
-  padding: .5rem;
-  background-color: var(--background-dark);
-  border-radius: var(--border-radius);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.mood-entry:hover {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.mood-emoji {
-  font-size: 1.5rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.mood-name {
-  font-size: 1rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.mood-date {
-  font-size: 0.8rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.mood-time {
-  font-size: 0.8rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.history-date {
-  font-size: 0.8rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-.history-time {
-  font-size: 0.8rem;
-  color: var(--text-light);
-  transition: var(--transition);
-}
-
-/* Estilos para la visualización gráfica */
-.mood-stats {
-  margin: 2rem 0;
-  padding: 1.5rem;
-  background-color: #f8f9fa;
+  max-height: 50rem;
+  max-width: 50rem;
+  overflow-y: auto;
+  padding-right: 0.5em;
+  margin: 1.2rem 0;
+  background: var(--background-dark);
   border-radius: 8px;
 }
 
+.mood-note {
+  font-style: italic;
+  opacity: 0.8;
+  margin-left: 0.5em;
+  flex-wrap: wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.mood-entry {
+  background: var(--background-dark);
+  color: var(--text-light);
+}
+
+.mood-entry select {
+  font-size: 1em;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  background: var(--background-dark);
+  color: var(--text-light);
+  transition: border 0.2s, background 0.2s;
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+
+.mood-entry textarea {
+  padding: 0.4em 1.2em;
+  font-size: 1em;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  background: var(--background-dark);
+  color: var(--text-light);
+  transition: border 0.2s, background 0.2s;
+  box-shadow: 0 1px 4px var(--shadow-color);
+  resize: none;
+  width: 50%;
+}
+
+.mood-entry button {
+  background: var(--primary-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.4em 1.2em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+
+.mood-form {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood-form textarea {
+  flex: 1;
+  padding: 0.4em 1.2em;
+  font-size: 1em;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  background: var(--background-dark);
+  color: var(--text-light);
+  transition: border 0.2s, background 0.2s;
+  box-shadow: 0 1px 4px var(--shadow-color);
+  resize: none;
+}
+
+.mood-form button {
+  background: var(--primary-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.4em 1.2em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+.mood-form button:hover {
+  background: var(--edit-color);
+}
+
+/* === Calendario === */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.3rem;
+  margin-bottom: 1.5rem;
+}
+.calendar-header {
+  font-weight: bold;
+  background: var(--background-light);
+  text-align: center;
+  padding: 0.3rem 0;
+  border-radius: 4px;
+  font-size: 1em;
+  color: var(--text-light);
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  justify-content: center;
+  margin-bottom: 1em;
+}
+.calendar-controls button {
+  background: var(--background-dark);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.4em 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.calendar-controls button:hover {
+  background: var(--edit-color);
+}
+
+.calendar-cell {
+  background: var(--background-lighter);
+  border-radius: 6px;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.14);
+  color: var(--text-light);
+}
+.calendar-cell:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  background: var(--background-lighter);
+}
+.calendar-day {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 0.2em;
+}
+.calendar-moods {
+  font-size: 1.5em;
+}
+
+/* === Selector de emociones y formulario === */
+.emotion-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+.emotion-button {
+  background: var(--background-dark);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5em 1em;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--text-light);
+}
+.emotion-button.selected, .emotion-button:hover {
+  background: var(--primary-color);
+}
+
+/* === Registros diarios e historial === */
+.selected-day-records, .mood-history {
+  margin: 1.2rem 0;
+}
+.mood-entry {
+  background: var(--background-dark);
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.16);
+  padding: 0.7em 1em;
+  margin-bottom: 0.7em;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  flex-wrap: wrap;
+  color: var(--text-light);
+}
+
+.close-records-btn {
+  background: var(--primary-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.4em 1.2em;
+  font-size: 1em;
+  margin-top: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: flex-end;
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+.close-records-btn:hover {
+  background: var(--edit-color);
+}
+
+.mood-emoji {
+  font-size: 1.5em;
+}
+.edit-mood, .delete-mood {
+  background: var(--background-dark);
+  border: none;
+  border-radius: 4px;
+  padding: 0.3em 0.7em;
+  cursor: pointer;
+  font-size: 0.95em;
+  margin-left: 0.5em;
+  transition: background 0.2s;
+  color: var(--text-light);
+}
+.edit-mood:hover, .delete-mood:hover {
+  background: var(--primary-color);
+}
+
+/* === Estadísticas === */
+.mood-stats {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--background-dark);
+  border-radius: 8px;
+}
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
   margin-top: 1rem;
 }
-
 .stat-item {
-  background-color: white;
+  background: var(--background-dark);
   border-radius: 4px;
   padding: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 .stat-bar {
   width: 100%;
   min-height: 10px;
   transition: height 0.3s ease;
 }
-
 .stat-label {
   display: flex;
   justify-content: space-between;
   margin-top: 0.5rem;
-  color: #6c757d;
+  color: var(--text-light);
 }
 
-.stat-name {
-  font-weight: 500;
+/* === Responsive === */
+@media (max-width: 900px) {
+  .mood-dashboard {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
 }
-
-.stat-count {
-  font-weight: 600;
-  color: #333;
+@media (max-width: 600px) {
+  .mood-container {
+    padding: 1rem 0.2rem;
+  }
+  .calendar-grid {
+    grid-template-columns: repeat(7, minmax(32px, 1fr));
+    gap: 0.15rem;
+  }
+  .calendar-header, .calendar-cell {
+    font-size: 0.9em;
+    min-height: 36px;
+  }
 }

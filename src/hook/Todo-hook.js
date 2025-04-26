@@ -1,221 +1,178 @@
 import { useState, useEffect } from "react";
 
 export function useTaskList() {
-  const saveLists = JSON.parse(localStorage.getItem("taskLists") || "[]");
-  const [lists, setLists] = useState(saveLists);
+  // Utilidad para generar IDs únicos
+  const generateId = () => Date.now().toString() + Math.random().toString(36).slice(2);
 
-  const [listNames, setListNames] = useState(
-    () =>
-      JSON.parse(localStorage.getItem("listNames") || "[]") ||
-      Array.from({ length: saveLists.length }, (_, i) => `Lista ${i + 1}`)
-  );
+  // Migración de datos antiguos (array plano) a nueva estructura de listas
+  const raw = JSON.parse(localStorage.getItem("taskLists") || "[]");
+  let migratedLists = [];
+  if (raw.length > 0 && !raw[0]?.id) {
+    // Estructura antigua: arrays de tareas
+    const names = JSON.parse(localStorage.getItem("listNames") || "[]");
+    const priorities = JSON.parse(localStorage.getItem("priorities") || "[]");
+    migratedLists = raw.map((tasks, i) => ({
+      id: generateId(),
+      name: names[i] || `Lista ${i+1}`,
+      priority: priorities[i] || 'normal',
+      tasks: (tasks || []).map(task => typeof task === 'string' ? { id: generateId(), text: task } : task)
+    }));
+    localStorage.setItem("taskLists", JSON.stringify(migratedLists));
+  } else {
+    migratedLists = raw;
+  }
+  const [lists, setLists] = useState(migratedLists);
 
-  const savePriorities = JSON.parse(localStorage.getItem("priorities") || "[]");
-  const [priorities, setPriorities] = useState(() => {
-    if (savePriorities.length) {
-      return savePriorities;
-    }
-    const initialPriorities = Array(lists.length).fill("normal");
-    localStorage.setItem("priorities", JSON.stringify(initialPriorities));
-    return initialPriorities;
-  });
-
-  const saveTaskPriorities = JSON.parse(
-    localStorage.getItem("taskPriorities") || "[]"
-  );
-  const [taskPriorities, setTaskPriorities] = useState(() => {
-    if (saveTaskPriorities.length) {
-      return saveTaskPriorities;
-    }
-    const initialPriorities = lists.map((tasks) =>
-      Array(tasks.length).fill("normal")
-    );
-    localStorage.setItem("taskPriorities", JSON.stringify(initialPriorities));
-    return initialPriorities;
-  });
-
-  const [inputValues, setInputValuesState] = useState(
-    Array.from({ length: lists.length }, () => "")
-  );
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [lists, priorities]);
-
-  const addToDo = (listIndex) => {
-    if (inputValues[listIndex].trim()) {
-      const newLists = [...lists];
-      const newList = [...newLists[listIndex], inputValues[listIndex]];
-      newLists[listIndex] = newList;
-      setLists(newLists);
-      localStorage.setItem("taskLists", JSON.stringify(newLists));
-      setInputValuesState((prev) => {
-        const newInputValues = [...prev];
-        newInputValues[listIndex] = "";
-        return newInputValues;
-      });
-    }
-  };
-
-  const setInputValues = (listIndex, value) => {
-    setInputValuesState((prev) => {
-      const newInputValues = [...prev];
-      newInputValues[listIndex] = value;
-      return newInputValues;
-    });
-  };
-
-  const deleteTask = (listIndex, taskIndex) => {
-    const newLists = [...lists];
-    const newTaskPriorities = [...taskPriorities];
-
-    newLists[listIndex].splice(taskIndex, 1);
-    newTaskPriorities[listIndex].splice(taskIndex, 1);
-
-    setLists(newLists);
-    setTaskPriorities(newTaskPriorities);
-    localStorage.setItem("taskLists", JSON.stringify(newLists));
-    localStorage.setItem("taskPriorities", JSON.stringify(newTaskPriorities));
-  };
-
-  const deleteAll = (listIndex) => {
-    const newLists = [...lists];
-    newLists[listIndex] = [];
-    setLists(newLists);
-    localStorage.setItem("taskLists", JSON.stringify(newLists));
-  };
-
-  const addNewList = () => {
-    setLists([...lists, []]);
-    setInputValuesState((prev) => [...prev, ""]);
-    setListNames((prev) => [...prev, `Lista ${prev.length + 1}`]);
-
-    setPriorities((prev) => [...prev, "normal"]);
-    setTaskPriorities((prev) => [...prev, []]);
-    localStorage.setItem("taskLists", JSON.stringify([...lists, []]));
-    localStorage.setItem(
-      "listNames",
-      JSON.stringify([...listNames, `Lista ${listNames.length + 1}`])
-    );
-    localStorage.setItem(
-      "priorities",
-      JSON.stringify([...priorities, "normal"])
-    );
-    localStorage.setItem(
-      "taskPriorities",
-      JSON.stringify([...taskPriorities, []])
-    );
-  };
-
-  const editListName = (listIndex, newName) => {
-    if (newName && newName.trim()) {
-      const updatedNames = [...listNames];
-      updatedNames[listIndex] = newName.trim();
-      setListNames(updatedNames);
-      localStorage.setItem("listNames", JSON.stringify(updatedNames));
-    }
-  };
-
-  const deleteList = (index) => {
-    if (lists.length > 1) {
-      const newLists = lists.filter((_, i) => i !== index);
-      const newNames = listNames.filter((_, i) => i !== index);
-      const newPriorities = priorities.filter((_, i) => i !== index);
-      const newTaskPriorities = taskPriorities.filter((_, i) => i !== index);
-      setLists(newLists);
-      setListNames(newNames);
-      setPriorities(newPriorities);
-      setTaskPriorities(newTaskPriorities);
-      setInputValuesState((prev) => prev.filter((_, i) => i !== index));
-      localStorage.setItem("taskLists", JSON.stringify(newLists));
-      localStorage.setItem("listNames", JSON.stringify(newNames));
-      localStorage.setItem("priorities", JSON.stringify(newPriorities));
-      localStorage.setItem("taskPriorities", JSON.stringify(newTaskPriorities));
-    }
-  };
-
-  const handlePriorityChange = (listIndex, value) => {
-    setPriorities((prev) => {
-      const newPriorities = [...prev];
-      newPriorities[listIndex] = value;
-      localStorage.setItem("priorities", JSON.stringify(newPriorities));
-      return newPriorities;
-    });
-  };
-
-  const handleTaskPriorityChange = (listIndex, taskIndex, priority) => {
-    const newTaskPriorities = [...taskPriorities];
-    if (newTaskPriorities[listIndex].length < lists[listIndex].length) {
-      newTaskPriorities[listIndex] = Array(lists[listIndex].length).fill(
-        "normal"
-      );
-    }
-    newTaskPriorities[listIndex][taskIndex] = priority;
-    setTaskPriorities(newTaskPriorities);
-    localStorage.setItem("taskPriorities", JSON.stringify(newTaskPriorities));
-  };
-
-  const sortTasksByPriority = (listIndex) => {
-    const newLists = [...lists];
-    const newTaskPriorities = [...taskPriorities];
-
-    const sortedTasks = newLists[listIndex]
-      .map((task, index) => ({
-        task,
-        priority: newTaskPriorities[listIndex][index] || "normal",
-      }))
-      .sort((a, b) => {
-        const priorityOrder = { high: 1, normal: 2, low: 3 };
-        return priorityOrder[a.priority] - priorityOrder[b.priority];
-      });
-
-    newLists[listIndex] = sortedTasks.map((item) => item.task);
-    newTaskPriorities[listIndex] = sortedTasks.map((item) => item.priority);
-
-    setLists(newLists);
-    setTaskPriorities(newTaskPriorities);
-    localStorage.setItem("taskLists", JSON.stringify(newLists));
-    localStorage.setItem("taskPriorities", JSON.stringify(newTaskPriorities));
-  };
-
-  useEffect(() => {
-    if (lists.length !== priorities.length) {
-      const newPriorities = Array(lists.length).fill("normal");
-      setPriorities(newPriorities);
-      localStorage.setItem("priorities", JSON.stringify(newPriorities));
-    }
-  }, [lists]);
-
-  useEffect(() => {
-    const newTaskPriorities = taskPriorities.map((priorities, index) => {
-      const taskCount = lists[index].length;
-      if (priorities.length !== taskCount) {
-        return Array(taskCount).fill("normal");
+  // Estado de tareas completadas (por id de lista y de tarea)
+  const [completed, setCompleted] = useState(() => {
+    const saved = localStorage.getItem("completedTasks");
+    let completedRaw = saved ? JSON.parse(saved) : {};
+    // MIGRACIÓN: Si algún completedRaw[list.id] es array, conviértelo a objeto
+    Object.keys(completedRaw).forEach(listId => {
+      if (Array.isArray(completedRaw[listId])) {
+        const arr = completedRaw[listId];
+        const obj = {};
+        arr.forEach((val, idx) => {
+          // Solo copia los valores que sean booleanos y tengan un taskId válido
+          if (typeof val === "boolean" && migratedLists.some(l => l.id === listId && l.tasks.some(t => t.id === idx))) {
+            // Busca el taskId real
+            const list = migratedLists.find(l => l.id === listId);
+            const task = list.tasks[idx];
+            if (task) obj[task.id] = val;
+          } else if (typeof val === "object" && val !== null) {
+            // Si es un objeto tipo {id, value}, intenta migrar
+            if (val.id && typeof val.value === "boolean") {
+              obj[val.id] = val.value;
+            }
+          }
+        });
+        completedRaw[listId] = obj;
       }
-      return priorities;
     });
+    // Asegura que todos los listId sean objetos
+    migratedLists.forEach(list => {
+      if (!completedRaw[list.id] || typeof completedRaw[list.id] !== "object") completedRaw[list.id] = {};
+      list.tasks.forEach(task => {
+        if (typeof completedRaw[list.id][task.id] !== "boolean") {
+          completedRaw[list.id][task.id] = false;
+        }
+      });
+    });
+    // Limpia el localStorage corrupto
+    localStorage.setItem("completedTasks", JSON.stringify(completedRaw));
+    return completedRaw;
+  });
 
-    if (JSON.stringify(newTaskPriorities) !== JSON.stringify(taskPriorities)) {
-      setTaskPriorities(newTaskPriorities);
-      localStorage.setItem("taskPriorities", JSON.stringify(newTaskPriorities));
-    }
+  // Sincronizar completed con cambios en lists
+  useEffect(() => {
+    setCompleted(prev => {
+      let completedRaw = { ...prev };
+      // Sincroniza solo tareas nuevas y elimina las que ya no existen
+      lists.forEach(list => {
+        if (!completedRaw[list.id]) completedRaw[list.id] = {};
+        list.tasks.forEach(task => {
+          if (typeof completedRaw[list.id][task.id] !== "boolean") {
+            completedRaw[list.id][task.id] = false;
+          }
+        });
+        // Elimina completados de tasks que ya no existen
+        Object.keys(completedRaw[list.id]).forEach(taskId => {
+          if (!list.tasks.some(t => t.id === taskId)) {
+            delete completedRaw[list.id][taskId];
+          }
+        });
+      });
+      // Elimina listas que ya no existen
+      Object.keys(completedRaw).forEach(listId => {
+        if (!lists.some(l => l.id === listId)) delete completedRaw[listId];
+      });
+      localStorage.setItem("completedTasks", JSON.stringify(completedRaw));
+      return completedRaw;
+    });
   }, [lists]);
 
-  useEffect(() => {
-    if (lists.length > taskPriorities.length) {
-      const newTaskPriorities = [...taskPriorities, []];
-      setTaskPriorities(newTaskPriorities);
-      localStorage.setItem("taskPriorities", JSON.stringify(newTaskPriorities));
+  // inputValues ahora es objeto por id de lista
+  const [inputValues, setInputValuesState] = useState(() => {
+    const obj = {};
+    for (const list of migratedLists) obj[list.id] = "";
+    return obj;
+  });
+
+  // Añadir tarea a lista por ID
+  const addToDo = (listId) => {
+    if (inputValues[listId]?.trim()) {
+      setLists(prev => prev.map(list =>
+        list.id === listId
+          ? { ...list, tasks: [...list.tasks, { id: generateId(), text: inputValues[listId] }] }
+          : list
+      ));
+      setInputValuesState(prev => ({ ...prev, [listId]: "" }));
     }
-  }, [lists.length]);
+  };
+
+  // Editar input value
+  const setInputValues = (listId, value) => {
+    setInputValuesState(prev => ({ ...prev, [listId]: value }));
+  };
+
+  // Eliminar tarea por ID de lista y de tarea
+  const deleteTask = (listId, taskId) => {
+    setLists(prev => prev.map(list =>
+      list.id === listId
+        ? { ...list, tasks: list.tasks.filter(task => task.id !== taskId) }
+        : list
+    ));
+  };
+
+  // Eliminar todas las tareas de una lista
+  const deleteAll = (listId) => {
+    setLists(prev => prev.map(list =>
+      list.id === listId ? { ...list, tasks: [] } : list
+    ));
+  };
+
+  // Agregar nueva lista
+  const addNewList = () => {
+    const newId = generateId();
+    setLists(prev => ([
+      ...prev,
+      { id: newId, name: `Lista ${prev.length + 1}`, priority: 'normal', tasks: [] }
+    ]));
+    setInputValuesState(prev => ({ ...prev, [newId]: "" }));
+  };
+
+  // Editar nombre de lista
+  const editListName = (listId, newName) => {
+    setLists(prev => prev.map(list =>
+      list.id === listId ? { ...list, name: newName.trim() } : list
+    ));
+  };
+
+  // Eliminar lista
+  const deleteList = (listId) => {
+    setLists(prev => prev.filter(list => list.id !== listId));
+    setInputValuesState(prev => {
+      const copy = { ...prev };
+      delete copy[listId];
+      return copy;
+    });
+  };
+
+  // Cambiar prioridad
+  const handlePriorityChange = (listId, value) => {
+    setLists(prev => prev.map(list =>
+      list.id === listId ? { ...list, priority: value } : list
+    ));
+  };
+
+  // Sincronizar con localStorage
+  useEffect(() => {
+    localStorage.setItem("taskLists", JSON.stringify(lists));
+  }, [lists]);
 
   return {
     lists,
-    listNames,
-    priorities,
-    taskPriorities,
+    setLists,
     inputValues,
     setInputValues,
     addToDo,
@@ -225,8 +182,8 @@ export function useTaskList() {
     deleteList,
     editListName,
     handlePriorityChange,
-    handleTaskPriorityChange,
-    sortTasksByPriority,
-    isLoading,
+    completed,
+    setCompleted,
   };
+
 }

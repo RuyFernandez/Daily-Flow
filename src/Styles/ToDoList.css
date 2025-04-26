@@ -6,7 +6,6 @@
   --text-light: #ffffff;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --border-radius: 12px;
-  --transition: all 0.3s ease;
   --add-color: #009908;
   --delete-color: #810900;
 }
@@ -14,7 +13,6 @@
 .container {
   width: 100%;
   height: 100%;
-  max-width: 75rem;
   margin: 0 auto;
   padding: 1.25rem;
   display: block;
@@ -27,31 +25,262 @@
   border-radius: var(--border-radius);
   padding: 0.75rem 1.5rem;
   cursor: pointer;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: transform 0.2s;
+  font-weight: 600;
 }
 
-.delete-button:hover {
-  background-color: var(--danger-color);
-  transition: var(--transition);
+.delete-button:active {
+  transform: scale(0.96);
 }
 
-.delete-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: var(--danger-color);
-  color: var(--text-light);
+.add-button:active {
+  transform: scale(0.96);
 }
 
-.add-button {
-  background-color: var(--add-color);
-  color: var(--text-light);
-  border: none;
+.edit-button:active {
+  transform: scale(0.96);
+}
+
+.edit-task-input {
+  border: 2px solid var(--primary-color);
   border-radius: var(--border-radius);
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  outline: none;
+  box-shadow: 0 1px 4px var(--shadow-color);
+  background: #23272f;
+  color: var(--text-light);
+  transition: border 0.2s, box-shadow 0.2s;
+  width: 60%;
+  min-width: 120px;
 }
-.add-button:hover {
-  background-color: var(--primary-color);
+
+.edit-task-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.edit-task-input:focus {
+  border: 2px solid var(--secondary-color);
+  background: #1a1a1a;
+}
+
+.task-checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.75rem;
+  accent-color: var(--secondary-color);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: box-shadow 0.2s;
+  appearance: auto;
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+}
+
+
+.task-checkbox:focus {
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.task.completed .task-text {
+  text-decoration: line-through;
+  opacity: .5;
+  color: #ff0000;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.task-text {
+  font-size: 1.05rem;
+  flex: 1 1 0%;
+  min-width: 0;
+  max-width: 100%;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.priority-btn {
+  background: none;
+  border: none;
+  font-size: 1.15rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 5rem;
+}
+
+.priority-dot {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  transition: background-color .9s;
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+.priority-high, .priority-alta {
+  background-color: rgb(225, 40, 40);
+}
+.priority-normal, .priority-media {
+  background-color: rgb(245, 200, 50);
+}
+.priority-low, .priority-baja {
+  background-color: rgb(60, 200, 90);
+}
+
+.task-text:hover {
+  background: #23272f;
+}
+
+.task-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0 0.7rem 0;
+}
+
+.task {
+  background: #23272f;
+  margin-bottom: 0.8rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: 3vw 4vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeIn 0.5s;
+  border-left: 5px solid var(--primary-color);
+  position: relative;
+  transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  word-break: break-word;
+  gap: 0.75rem;
+}
+
+.task:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.task:hover {
+  box-shadow: 0 6px 18px var(--shadow-color);
+  border-left: 5px solid var(--secondary-color);
+  background: #232b36;
+}
+
+.task.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.5;
+  color: #b0b0b0;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.delete-animation {
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+    height: 0;
+    margin-bottom: 0;
+  }
+}
+
+.input-container input[type="text"] {
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  background: #23272f;
+  color: var(--text-light);
+  box-shadow: 0 1px 4px var(--shadow-color);
+  transition: border 0.2s, background 0.2s;
+}
+
+.input-container input[type="text"]:focus {
+  border: 2px solid var(--primary-color);
+  background: #1a1a1a;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+
+.lists-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+.list-column {
+  background-color: var(--background-dark);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px var(--shadow-color);
   transition: var(--transition);
+  min-height: 400px;
+  border: 1.5px solid #23272f;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #23272f;
+  padding-bottom: 0.8rem;
+}
+
+.list-name-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.list-name {
+  font-size: 1.3rem;
+  color: var(--text-light);
+  font-weight: 600;
 }
 
 .toDoList-title {
@@ -66,15 +295,6 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
-}
-
-.lists-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  width: 100%;
 }
 
 .list-column {
@@ -137,15 +357,117 @@
 
 .button:hover {
   transform: translateY(-1px);
+  filter: brightness(1.08);
 }
 
 .button:active {
   transform: translateY(0);
 }
 
+.cancel-btn {
+  background: #b71c1c;
+  color: #fff;
+  margin-right: 0.5rem;
+}
+.cancel-btn:hover {
+  background: #810900;
+}
+
+.done-btn {
+  background: var(--add-color);
+  color: #fff;
+  font-weight: bold;
+}
+.done-btn:hover {
+  background: #1769aa;
+}
+
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.add-list-button {
+  background: var(--primary-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.7rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.add-list-button:hover {
+  background: var(--secondary-color);
+}
+
+.add-list-button:active {
+  transform: scale(0.97);
+}
+
+.add-button {
+  background-color: var(--add-color, var(--primary-color));
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, filter 0.2s;
+}
+.add-button:hover {
+  background-color: var(--primary-color);
+  filter: brightness(1.08);
+}
+
+.delete-button {
+  background-color: var(--danger-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, filter 0.2s;
+}
+.delete-button:hover {
+  background-color: #a31515;
+  filter: brightness(1.08);
+}
+.delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--danger-color);
+  color: var(--text-light);
+}
+
+.edit-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: color 0.2s;
+}
+.edit-button:hover {
+  color: var(--secondary-color);
+}
+
+.sort-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: color 0.2s;
+}
+.sort-button:hover {
+  color: #1a1a1a;
 }
 
 .task-list {
@@ -173,7 +495,7 @@
 }
 
 .task-list li.delete-animation::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 0;
@@ -203,29 +525,6 @@
   background-color: var(--primary-color);
 }
 
-.task-priority-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-  justify-content: flex-end;
-}
-
-.task-priority-container select {
-  transition: all 0.3s ease;
-  background-color: var(--background-dark);
-  color: var(--text-light);
-  border: none;
-  border-radius: var(--border-radius);
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
-}
-
-.task-priority-container select:hover {
-  background-color: var(--primary-color);
-}
-
 .priorities-container {
   display: flex;
   align-items: center;
@@ -233,79 +532,9 @@
   background-color: var(--background-dark);
   border-radius: var(--border-radius);
   padding: 0.75rem;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
-}
-
-.priorities-select-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.priority-icon {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  transition: all 0.3s ease;
-  cursor: default;
-}
-
-.priority-icon:hover {
-  transform: scale(1.1);
-  cursor: default;
-}
-
-.priority-icon.high::before {
-  content: '';
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  margin-right: 0.25rem;
-  background-color: #ff4444;
-  cursor: default;
-}
-
-.priority-icon.normal::before {
-  content: '';
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  margin-right: 0.25rem;
-  background-color: #ffbb33;
-  cursor: default;
-}
-
-.priority-icon.low::before {
-  content: '';
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  margin-right: 0.25rem;
-  background-color: #4caf50;
-  cursor: default;
-}
-
-
-.task-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  padding: 0.5rem;
-}
-
-.task-content span {
-  word-break: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
 }
 
 .add-list-button {
-  width: 100%;
   padding: 0.8rem;
   margin-block-end: 0.5rem;
   background-color: var(--primary-color);
@@ -334,50 +563,64 @@
   font-weight: bold;
 }
 
-.edit-button {
-  background-color: transparent;
-  border: none;
-  color: var(--text-light);
-  font-size: 1.25rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  transition: var(--transition);
-}
-
-.edit-button:hover {
-  color: var(--primary-color);
-}
-
 @media (max-width: 1200px) {
-
- 
   .priority-delete-container {
     display: flex;
     flex-direction: column;
     align-items: end;
     justify-content: end;
     gap: 0.5rem;
-    width: 100%;
-  } 
+    width: fit-content;
+  }
 
   .lists-container {
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.2rem;
+    padding: 1rem 0.5rem;
   }
 
   .list-column {
-    min-width: 100%;
+    min-width: 0;
     margin-bottom: 1.5rem;
+    padding: 0.5rem;
   }
-
-  .input-container {
-    align-items: center;
-    justify-content: center;
+  .task {
+    padding: 2vw 3vw;
+    font-size: 1rem;
   }
-
   .input-container input {
-    width: 100%;
+    font-size: 1rem;
+  }
+  .add-button, .delete-button {
+    font-size: 1rem;
+    padding: 0.4rem 0.9rem;
   }
 }
+
+@media (max-width: 700px) {
+  .lists-container {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    padding: 0.5rem 0.2rem;
+  }
+  .list-column {
+    min-width: 0;
+    margin-bottom: 1rem;
+    padding: 0.2rem;
+  }
+  .task {
+    padding: 2vw 2vw;
+    font-size: 0.98rem;
+  }
+  .input-container input {
+    font-size: 0.98rem;
+  }
+  .add-button, .delete-button {
+    font-size: 0.98rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+
 
 @media (max-width: 900px) {
   .lists-container {
@@ -402,7 +645,7 @@
 
   .input-container {
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
   }
 
   .list-column {

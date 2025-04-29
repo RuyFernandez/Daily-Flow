@@ -11,8 +11,8 @@
   z-index: 1000;
 }
 .modal-content {
-  background: #222;
-  color: #fff;
+  background: var(--background-color);
+  color: var(--text-color);
   border-radius: 12px;
   padding: 2rem 3rem;
   box-shadow: 0 4px 24px rgba(0,0,0,0.5);
@@ -27,8 +27,8 @@
   margin-top: 1.5rem;
 }
 .modal-confirm {
-  background: #2196f3;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-color);
   border: none;
   border-radius: 8px;
   padding: 0.7rem 2rem;
@@ -37,11 +37,11 @@
   transition: background 0.2s;
 }
 .modal-confirm:hover {
-  background: #1769aa;
+  background: var(--edit-color);
 }
 .modal-cancel {
-  background: #810900;
-  color: #fff;
+  background: var(--delete-color);
+  color: var(--text-color);
   border: none;
   border-radius: 8px;
   padding: 0.7rem 2rem;
@@ -50,5 +50,5 @@
   transition: background 0.2s;
 }
 .modal-cancel:hover {
-  background: #b71c1c;
+  background: var(--error-color);
 }

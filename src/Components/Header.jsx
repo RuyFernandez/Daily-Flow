@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "../Styles/Header.css";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "../theme-context.jsx";
 
 export default function Header() {
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   if (pathname === "/") return null;
 
@@ -33,6 +35,14 @@ export default function Header() {
           <h3 className="title">Home</h3>
         </Link>
       </nav>
+      <button
+        className="theme-toggle-btn"
+        onClick={toggleTheme}
+        aria-label="Cambiar tema"
+        style={{ marginLeft: 16, padding: '6px 12px', borderRadius: 8, border: 'none', cursor: 'pointer', background: 'var(--background-light)', color: 'var(--text-color)', transition: 'var(--transition)' }}
+      >
+        {theme === 'dark' ? '🌙 Oscuro' : '☀️ Claro'}
+      </button>
     </header>
   );
 }

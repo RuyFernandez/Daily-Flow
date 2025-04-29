@@ -1,15 +1,16 @@
 import "../Styles/MoodTracker.css";
 import { useState } from "react";
 import { useMood } from "../hook/Mood-hook";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const emotions = [
-  { id: 1, name: "Happy", emoji: "😊" },
-  { id: 2, name: "Sad", emoji: "😢" },
-  { id: 3, name: "Angry", emoji: "😠" },
-  { id: 4, name: "Fear", emoji: "😨" },
-  { id: 5, name: "Surprise", emoji: "😲" },
-  { id: 6, name: "Disgust", emoji: "🤢" },
-  { id: 7, name: "Neutral", emoji: "😐" },
+  { id: 1, name: "Happy", emoji: "😊", color: "#FFD700" },    // Amarillo
+  { id: 2, name: "Sad", emoji: "😢", color: "#0000FF" },      // Azul
+  { id: 3, name: "Angry", emoji: "😠", color: "#FF0000" },    // Rojo
+  { id: 4, name: "Fear", emoji: "😨", color: "#8A2BE2" },     // Violeta
+  { id: 5, name: "Surprise", emoji: "😲", color: "#FF69B4" }, // Rosa
+  { id: 6, name: "Disgust", emoji: "🤢", color: "#32CD32" },  // Verde
+  { id: 7, name: "Neutral", emoji: "😐", color: "#A9A9A9" },  // Gris
 ];
 
 export default function MoodTracker() {
@@ -73,15 +74,34 @@ export default function MoodTracker() {
     setMoodHistory(moodHistory.filter(entry => entry.id !== id));
   };
 
+  // Filtrar moods por mes y año seleccionados
+  const filteredMoodHistory = moodHistory.filter(entry => {
+    const entryDate = new Date(entry.date);
+    return (
+      entryDate.getMonth() === calendarMonth &&
+      entryDate.getFullYear() === calendarYear
+    );
+  });
+
   const calculateStats = () => {
     const stats = emotions.map(emotion => ({
       name: emotion.name,
-      count: moodHistory.filter(m => m.emotion.id === emotion.id).length
+      count: filteredMoodHistory.filter(m => m.emotion.id === emotion.id).length
     }));
     return stats;
   };
 
   const stats = calculateStats();
+
+  // Si no hay datos, mostrar todos los colores con valor 1
+  const isEmptyStats = stats.every(stat => stat.count === 0);
+  // Siempre mostrar todos los segmentos (aunque count sea 0)
+  const displayStats = isEmptyStats
+    ? emotions.map(emotion => ({ name: emotion.name, count: 1 }))
+    : emotions.map(emotion => {
+        const stat = stats.find(s => s.name === emotion.name);
+        return { name: emotion.name, count: stat ? stat.count : 0 };
+      });
 
   const getMoodsByDate = () => {
     const grouped = {};
@@ -225,18 +245,45 @@ export default function MoodTracker() {
             </div>
           </div>
           <div className="mood-stats">
-            {/* Aquí va tu visualización gráfica/estadísticas */}
             <h2>Mood Distribution</h2>
-            <div className="stats-grid">
-              {stats.map((stat, index) => (
-                <div key={index} className="stat-item">
-                  <div className="stat-bar" style={{
-                    height: `${stat.count * 10}px`,
-                    backgroundColor: `hsl(${(index * 50) % 360}, 70%, 50%)`
-                  }}></div>
-                  <span className="stat-label">{emotions[index].emoji} {stat.name}: {stat.count}</span>
-                </div>
-              ))}
+            <div style={{ width: '100%', height: 300 }}>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie
+                    data={displayStats}
+                    dataKey="count"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label={({ name, count }) => {
+                      if (isEmptyStats) return name;
+                      if (count > 0) return `${name}: ${count}`;
+                      return '';
+                    }}
+                    isAnimationActive={true}
+                    animationDuration={900}
+                    labelLine={false}
+                  >
+                    {displayStats.map((entry, index) => {
+                      const emotion = emotions.find(e => e.name === entry.name);
+                      return (
+                        <Cell key={`cell-${index}`} fill={emotion ? emotion.color : "#ccc"} />
+                      );
+                    })} 
+                  </Pie>
+                  <Tooltip formatter={(value, name) => [`${value} registro(s)`, name]} />
+                  <Legend
+                    payload={emotions.map((emotion) => ({
+                      value: `${emotion.emoji} ${emotion.name}`,
+                      type: 'square',
+                      id: emotion.id,
+                      color: emotion.color
+                    }))}
+                    onClick={e => e && e.preventDefault && e.preventDefault()}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>

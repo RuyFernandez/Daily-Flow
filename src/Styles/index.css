@@ -2,34 +2,68 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: #fff;
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --primary-color: #33384a;
-  --text-light: #fff;
-  --text-dark: #242424;
-  --background-color: #242424;
-  --background-light: #3a3f54;
-  --background-dark: #1e1e1e;
-  --background-lighter: #242424;
-  --shadow-color: rgba(0, 0, 0, 0.1);
   --border-radius: 12px;
   --transition: all 0.3s ease;
-  --add-color: #009908;
-  --delete-color: #810900;
-  --edit-color: #5a6bdb;
-  --success-color: #009908;
-  --error-color: #810900;
-  --warning-color: #e59000;
-  --info-color: #5a6bdb;
-  --light-color: #3a3f54;
-  --dark-color: #1e1e1e;
+  /* Hot autumn palette base */
+  --autumn-orange: #fa9422;
+  --autumn-yellow: #f8cc73;
+  --autumn-red: #a32328;
+  --autumn-brown: #a16456;
+  --autumn-pink: #d6bcc4;
+  --autumn-blue: #2b2c54;
+}
+
+[data-theme="dark"] {
+  --primary-color: var(--autumn-orange); /* naranja principal */
+  --text-color: #fff;
+  --background-color: var(--autumn-blue); /* azul oscuro */
+  --background-light: #393a5c;
+  --background-dark: #23233a;
+  --background-lighter: #35355e;
+  --shadow-color: rgba(43,44,84,0.25);
+  --add-color: var(--autumn-yellow);
+  --delete-color: var(--autumn-red);
+  --edit-color: var(--autumn-brown);
+  --success-color: var(--autumn-yellow);
+  --error-color: var(--autumn-red);
+  --warning-color: var(--autumn-orange);
+  --info-color: var(--autumn-pink);
+  --light-color: #393a5c;
+  --dark-color: #23233a;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+[data-theme="light"] {
+  --primary-color: var(--autumn-orange); /* naranja principal */
+  --text-color: var(--autumn-blue); /* azul oscuro */
+  --background-color: #fffbe6; /* fondo muy claro, inspirado en la paleta */
+  --background-light: var(--autumn-yellow);
+  --background-dark: #f8cc73;
+  --background-lighter: #fffbe6;
+  --shadow-color: rgba(250,148,34,0.08);
+  --add-color: var(--autumn-orange);
+  --delete-color: var(--autumn-red);
+  --edit-color: var(--autumn-brown);
+  --success-color: var(--autumn-yellow);
+  --error-color: var(--autumn-red);
+  --warning-color: var(--autumn-orange);
+  --info-color: var(--autumn-pink);
+  --light-color: var(--autumn-yellow);
+  --dark-color: var(--autumn-blue);
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+body, html {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition: var(--transition);
 }
 
 *{

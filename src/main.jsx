@@ -9,15 +9,19 @@ import Home from './Components/Home.jsx'
 
 
 
+import { ThemeProvider } from './theme-context.jsx';
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/todo" element={<ToDoList />} />
-        <Route path="/mood" element={<MoodTracker />} />
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/todo" element={<ToDoList />} />
+          <Route path="/mood" element={<MoodTracker />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   </StrictMode>,
 )

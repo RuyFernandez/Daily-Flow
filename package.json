@@ -6,7 +6,9 @@
   "main": "electron.cjs",
   "scripts": {
     "dev": "vite",
-    "build": "electron-builder",
+    "build:frontend": "vite build",
+    "build:electron": "electron-builder",
+    "build": "npm run build:frontend && npm run build:electron",
     "lint": "eslint .",
     "preview": "vite preview",
     "electron": "electron ."
@@ -15,9 +17,9 @@
     "@hello-pangea/dnd": "^18.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.4.1"
+    "react-router-dom": "^7.4.1",
+    "recharts": "^2.15.3"
   },
-  
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/react": "^19.0.10",
@@ -32,18 +34,18 @@
     "vite": "^6.2.0"
   },
   "build": {
-  "appId": "com.tuempresa.tuapp",
-  "productName": "Daily Flow",
-  "files": [
-    "dist/**/*",
-    "electron.cjs",
-    "package.json"
-  ],
-  "directories": {
-    "buildResources": "assets"
-  },
-  "win": {
-    "target": "nsis"
+    "appId": "com.tuempresa.tuapp",
+    "productName": "Daily Flow",
+    "files": [
+      "dist/**/*",
+      "electron.cjs",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis"
+    }
   }
-}
 }

@@ -42,15 +42,15 @@
 
 .mood-entry {
   background: var(--background-dark);
-  color: var(--text-light);
+  color: var(--text-color);
 }
 
 .mood-entry select {
   font-size: 1em;
-  border: 2px solid transparent;
+  border: 2px solid var(--border-color);
   border-radius: var(--border-radius);
   background: var(--background-dark);
-  color: var(--text-light);
+  color: var(--text-color);
   transition: border 0.2s, background 0.2s;
   box-shadow: 0 1px 4px var(--shadow-color);
 }
@@ -58,10 +58,10 @@
 .mood-entry textarea {
   padding: 0.4em 1.2em;
   font-size: 1em;
-  border: 2px solid transparent;
+  border: 2px solid var(--border-color);
   border-radius: var(--border-radius);
   background: var(--background-dark);
-  color: var(--text-light);
+  color: var(--text-color);
   transition: border 0.2s, background 0.2s;
   box-shadow: 0 1px 4px var(--shadow-color);
   resize: none;
@@ -70,7 +70,7 @@
 
 .mood-entry button {
   background: var(--primary-color);
-  color: var(--text-light);
+  color: var(--text-color);
   border: none;
   border-radius: var(--border-radius);
   padding: 0.4em 1.2em;
@@ -91,10 +91,10 @@
   flex: 1;
   padding: 0.4em 1.2em;
   font-size: 1em;
-  border: 2px solid transparent;
+  border: 2px solid var(--border-color);
   border-radius: var(--border-radius);
   background: var(--background-dark);
-  color: var(--text-light);
+  color: var(--text-color);
   transition: border 0.2s, background 0.2s;
   box-shadow: 0 1px 4px var(--shadow-color);
   resize: none;
@@ -102,7 +102,7 @@
 
 .mood-form button {
   background: var(--primary-color);
-  color: var(--text-light);
+  color: var(--text-color);
   border: none;
   border-radius: var(--border-radius);
   padding: 0.4em 1.2em;
@@ -129,7 +129,7 @@
   padding: 0.3rem 0;
   border-radius: 4px;
   font-size: 1em;
-  color: var(--text-light);
+  color: var(--text-color);
 }
 
 .calendar-controls {
@@ -141,7 +141,7 @@
 }
 .calendar-controls button {
   background: var(--background-dark);
-  color: var(--text-light);
+  color: var(--text-color);
   border: none;
   border-radius: var(--border-radius);
   padding: 0.4em 1em;
@@ -164,7 +164,7 @@
   font-size: 1.1em;
   transition: box-shadow 0.2s, background 0.2s;
   box-shadow: 0 1px 2px rgba(0,0,0,0.14);
-  color: var(--text-light);
+  color: var(--text-color);
 }
 .calendar-cell:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.18);
@@ -198,7 +198,7 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
-  color: var(--text-light);
+  color: var(--text-color);
 }
 .emotion-button.selected, .emotion-button:hover {
   background: var(--primary-color);
@@ -218,12 +218,12 @@
   align-items: center;
   gap: 0.7em;
   flex-wrap: wrap;
-  color: var(--text-light);
+  color: var(--text-color);
 }
 
 .close-records-btn {
   background: var(--primary-color);
-  color: var(--text-light);
+  color: var(--text-color);
   border: none;
   border-radius: var(--border-radius);
   padding: 0.4em 1.2em;
@@ -250,7 +250,7 @@
   font-size: 0.95em;
   margin-left: 0.5em;
   transition: background 0.2s;
-  color: var(--text-light);
+  color: var(--text-color);
 }
 .edit-mood:hover, .delete-mood:hover {
   background: var(--primary-color);
@@ -284,7 +284,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 0.5rem;
-  color: var(--text-light);
+  color: var(--text-color);
 }
 
 /* === Responsive === */
